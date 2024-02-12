@@ -1,74 +1,91 @@
 @tool
 class_name TextureRectRounded
-extends TextureRect
+extends Panel
 
-@export var radius_bottom_left: int = 120:
+@export var corner_detail: int = 8:
+	set(new_value):
+		corner_detail = new_value
+		_update_panel_values()
+		
+
+@export var radius_bottom_left: int = 8:
 	set(new_value):
 		radius_bottom_left = new_value
-		_set_corner_radius()
+		_update_panel_values()
 
-@export var radius_bottom_right: int = 120:
+
+@export var radius_bottom_right: int = 8:
 	set(new_value):
 		radius_bottom_right = new_value
-		_set_corner_radius()
+		_update_panel_values()
 
-@export var radius_top_left: int = 120:
+
+@export var radius_top_left: int = 8:
 	set(new_value):
 		radius_top_left = new_value
-		_set_corner_radius()
+		_update_panel_values()
 
-@export var radius_top_right: int = 120:
+
+@export var radius_top_right: int = 8:
 	set(new_value):
 		radius_top_right = new_value
-		_set_corner_radius()
+		_update_panel_values()
 
+
+@export var texture: Texture2D = null:
+	set(new_value):
+		texture = new_value
+		texture_rect.texture = texture
+
+
+@export var anti_aliasing: bool = false:
+	set(new_value):
+		anti_aliasing = new_value
+		_update_panel_values()
+
+
+@export var expand_mode: TextureRect.ExpandMode = TextureRect.ExpandMode.EXPAND_IGNORE_SIZE:
+	set(new_value):
+		expand_mode = new_value
+		texture_rect.expand_mode = expand_mode
+
+
+@export var stretch_mode: TextureRect.StretchMode = TextureRect.StretchMode.STRETCH_SCALE:
+	set(new_value):
+		stretch_mode = new_value
+		texture_rect.stretch_mode = stretch_mode
+
+
+@export var flip_h: bool = false:
+	set(new_value):
+		flip_h = new_value
+		texture_rect.flip_h = flip_h
+
+
+@export var flip_v: bool = false:
+	set(new_value):
+		flip_h = new_value
+		texture_rect.flip_v = flip_v
+
+
+var stylebox = StyleBoxFlat.new()
+var texture_rect = TextureRect.new()
 
 func _ready():
-	var shader_material = load(
-		"res://addons/TextureRectRounded/TextureRectRoundedShaderMaterial.tres"
-	)
-	set_material(shader_material)
-	resized.connect(self._on_resized)
+	clip_children = CanvasItem.CLIP_CHILDREN_ONLY
+	
+	add_theme_stylebox_override("panel", stylebox)
+	_update_panel_values()
+	
+	texture_rect.expand_mode = expand_mode
+	texture_rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	add_child(texture_rect)
 
 
-func _set_corner_radius():
-	# the factor is used to maintain the same corner_radius independent of the aspect ratio
-	var tex_size: Vector2 = texture.get_size()
-	var factor: float = (
-		tex_size.x / tex_size.y if tex_size.x > tex_size.y else tex_size.y / tex_size.x
-	)
-	material.set_shader_parameter("corner_radius_bl", radius_bottom_left * factor)
-	material.set_shader_parameter("corner_radius_br", radius_bottom_right * factor)
-	material.set_shader_parameter("corner_radius_tl", radius_top_left * factor)
-	material.set_shader_parameter("corner_radius_tr", radius_top_right * factor)
-
-
-func _on_resized():
-	_update_shader_params()
-
-
-func _update_shader_params(_stretch_mode = stretch_mode):
-	var start := Vector2(0.0, 0.0)
-	var end := Vector2(1.0, 1.0)
-	if _stretch_mode == StretchMode.STRETCH_KEEP_ASPECT_COVERED and texture != null:
-		var tex_size: Vector2 = texture.get_size()
-		var scale_size: Vector2 = Vector2(size.x / tex_size.x, size.y / tex_size.y)
-		var scale: float = scale_size.x if scale_size.x > scale_size.y else scale_size.y
-		var scaled_tex_size: Vector2 = tex_size * scale
-		start = (((scaled_tex_size - size) / scale).abs() / 2.0) / tex_size
-		end = (size / scale) / tex_size + start
-
-	var shader_material: ShaderMaterial = material
-	shader_material.set_shader_parameter("left_bound", start.x)
-	shader_material.set_shader_parameter("right_bound", end.x)
-	shader_material.set_shader_parameter("top_bound", start.y)
-	shader_material.set_shader_parameter("bottom_bound", end.y)
-
-
-func _set(property: StringName, value: Variant) -> bool:
-	if property == "stretch_mode":
-		_update_shader_params.call_deferred(value)
-	elif property == "texture":
-		_update_shader_params.call_deferred()
-		_set_corner_radius.call_deferred()
-	return false
+func _update_panel_values():
+	stylebox.corner_radius_bottom_left = radius_bottom_left
+	stylebox.corner_radius_bottom_right = radius_bottom_right
+	stylebox.corner_radius_top_left = radius_top_left
+	stylebox.corner_radius_top_right = radius_top_right
+	stylebox.anti_aliasing = anti_aliasing
+	stylebox.corner_detail = corner_detail

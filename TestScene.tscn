@@ -1,8 +1,14 @@
 [gd_scene load_steps=4 format=3 uid="uid://btc6b2wmj2hwn"]
 
-[ext_resource type="Material" uid="uid://co5536navsx7g" path="res://addons/TextureRectRounded/TextureRectRoundedShaderMaterial.tres" id="1_nfcb7"]
-[ext_resource type="Texture2D" uid="uid://dvah0pf72kutf" path="res://thumbnail.webp" id="2_537gx"]
-[ext_resource type="Script" path="res://addons/TextureRectRounded/TextureRectRounded.gd" id="3_g51rh"]
+[ext_resource type="Script" path="res://addons/TextureRectRounded/TextureRectRounded.gd" id="1_6ut8n"]
+[ext_resource type="Texture2D" uid="uid://dvah0pf72kutf" path="res://thumbnail.webp" id="2_0nreb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_72lrt"]
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+anti_aliasing = false
 
 [node name="TestScene" type="Control"]
 layout_mode = 3
@@ -12,15 +18,24 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRectRounded" type="TextureRect" parent="."]
-material = ExtResource("1_nfcb7")
+[node name="TextureRectRounded" type="Panel" parent="."]
+clip_children = 1
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -100.0
+offset_right = 200.0
+offset_bottom = 100.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_537gx")
-expand_mode = 1
-stretch_mode = 6
-script = ExtResource("3_g51rh")
+theme_override_styles/panel = SubResource("StyleBoxFlat_72lrt")
+script = ExtResource("1_6ut8n")
+radius_bottom_left = 32
+radius_bottom_right = 32
+radius_top_left = 32
+radius_top_right = 32
+texture = ExtResource("2_0nreb")

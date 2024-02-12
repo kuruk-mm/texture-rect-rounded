@@ -5,7 +5,7 @@ extends EditorPlugin
 func _enter_tree():
 	add_custom_type(
 		"TextureRectRounded",
-		"TextureRect",
+		"Control",
 		load("res://addons/TextureRectRounded/TextureRectRounded.gd"),
 		load("res://addons/TextureRectRounded/TextureRectRounded.svg")
 	)
