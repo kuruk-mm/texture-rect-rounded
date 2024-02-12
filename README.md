@@ -1,5 +1,5 @@
 # TextureRectRounded
 
-TextureRect with Rounded Borders, including StretchMode COVERED
+TextureRect with Rounded Corners, including StretchMode COVERED
 
 ![Preview](preview.png)
