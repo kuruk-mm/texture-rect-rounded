@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://co5536navsx7g"]
+
+[ext_resource type="Shader" path="res://addons/TextureRectRounded/TextureRectRounded.gdshader" id="1_cgu4c"]
+
+[resource]
+shader = ExtResource("1_cgu4c")
+shader_parameter/corner_radius_bl = 32.0
+shader_parameter/corner_radius_br = 32.0
+shader_parameter/corner_radius_tl = 32.0
+shader_parameter/corner_radius_tr = 32.0
+shader_parameter/left_bound = 0.0
+shader_parameter/right_bound = 1.0
+shader_parameter/top_bound = 0.0
+shader_parameter/bottom_bound = 1.0
